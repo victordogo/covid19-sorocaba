@@ -1,7 +1,7 @@
 
 # covid19-sorocaba
 
-!(docs/images/logo-proex-ufscar.png)
+![](/docs/images/logo-proex-ufscar.png)
 
 Este é o repositório do site "A COVID-19 em Sorocaba". Ele é o resultado do Projeto de Extensão  "Análise e Visualização dos Dados da Pandemia na Cidade de Sorocaba", sob fomento da ProEx - Pró Reitoria de Extensão da UFSCar - Universidade Federal de São Carlos.
 
