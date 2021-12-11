@@ -1,5 +1,5 @@
 ---
-title: "A COVID-19 em Sorocaba"
+title: "A COVID-19 em Sorocaba - em construção"
 bibliography: refs/ref.bib
 csl: refs/abnt.csl
 nocite: '@*'
