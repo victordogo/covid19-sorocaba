@@ -73,12 +73,7 @@ casos_diarios |> plotly::ggplotly()
 
 # Casos Acumulados de sorocaba comparada com cidades da regiao
 
-cidades <- c("Sorocaba", "Tatuí", "Itapetininga", "Votorantim",
-             "Itu", "São Roque", "Boituva", "Tietê", "Campinas",
-             "Piedade")
-
 casos_acumulados <- covid_sp |>
-  dplyr::filter(city %in% cidades) |>
   dplyr::group_by(city) |>
   dplyr::rename(`Dia`=date,
                 `Total de Casos`=last_available_confirmed,
@@ -235,12 +230,7 @@ mortes_diarias |> plotly::ggplotly()
 
 # Mortes acumuladas de sorocaba comparada com cidades da regiao
 
-cidades <- c("Sorocaba", "Tatuí", "Itapetininga", "Votorantim",
-             "Itu", "São Roque", "Boituva", "Tietê", "Campinas",
-             "Piedade")
-
 mortes_acumuladas <- covid_sp |>
-  dplyr::filter(city %in% cidades) |>
   dplyr::group_by(city) |>
   dplyr::rename(`Dia`=date,
                 `Total de Mortes`=last_available_deaths,

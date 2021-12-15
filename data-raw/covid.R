@@ -4,8 +4,12 @@
 
 ## Dados relativos a vacinacao nao serao encontrados neste banco de dados.
 
+cidades <- c("Sorocaba", "Tatuí", "Itapetininga", "Votorantim",
+             "Itu", "São Roque", "Boituva", "Tietê", "Campinas",
+             "Piedade")
+
 covid_sp <- readr::read_csv("https://data.brasil.io/dataset/covid19/caso_full.csv.gz") |>
-  dplyr::filter(state=="SP") |>
+  dplyr::filter(city %in% cidades) |>
   dplyr::select(
     city, date, estimated_population, last_available_confirmed,
     last_available_deaths, new_confirmed, new_deaths
