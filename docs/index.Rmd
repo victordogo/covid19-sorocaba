@@ -453,7 +453,156 @@ grafico_vacinacao |> plotly::ggplotly()
 
 ```
 
-### Vacinação da Cidade de Sorocaba - Tabela
+### Tabela (População Feminina)
+
+```{r}
+# Apresentando porcentagems divididas por faixa etaria em tabela
+# (pop. feminina)
+
+# Tabela da primeira dose
+
+primeira_dose_f <- vacina_scb |> 
+  dplyr::filter(dose_vacina==1,
+                sexo=="F") |>
+  dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
+                `Grupo Etário`=grupo_idade) |>
+  dplyr::arrange(grupo_idade) |> 
+  dplyr::ungroup() |> 
+  dplyr::select(`Grupo Etário`,`Porcentagem`) |> 
+  gt::gt() |> 
+  gt::as_raw_html()
+
+# Tabela da segunda dose
+
+segunda_dose_f <- vacina_scb |> 
+  dplyr::filter(dose_vacina==2,
+                sexo=="F") |>
+  dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
+                `Grupo Etário`=grupo_idade) |>
+  dplyr::arrange(grupo_idade) |> 
+  dplyr::ungroup() |> 
+  dplyr::select(`Grupo Etário`,`Porcentagem`) |> 
+  gt::gt() |> 
+  gt::as_raw_html()
+
+# Apresentando as duas tabelas
+
+data.frame(primeira_dose_f,segunda_dose_f) |> 
+  gt::gt() |> 
+  gt::fmt_markdown(columns=dplyr::everything()) |> 
+  gt::cols_label(primeira_dose_f="% com 1ª dose aplicada",
+                 segunda_dose_f="% com 2ª dose aplicada") |>
+  gt::tab_footnote("Alguns valores são acima de 100% pois a pop. utilizada para cálculo se trata de uma estimativa",
+                   locations = gt::cells_title()) |> 
+  gt::tab_header(
+    title=gt::md("**Vacinação da População Feminina de Sorocaba**"),
+    subtitle=gt::md("Fonte: Ministério da Saúde 2020 e basedosdados.org")
+  )
+
+```
+
+### Tabela (População Masculina)
+
+```{r}
+# Apresentando porcentagems divididas por faixa etaria em tabela
+# (pop. masculina)
+
+# Tabela da primeira dose
+
+primeira_dose_m <- vacina_scb |> 
+  dplyr::filter(dose_vacina==1,
+                sexo=="M") |>
+  dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
+                `Grupo Etário`=grupo_idade) |>
+  dplyr::arrange(grupo_idade) |> 
+  dplyr::ungroup() |> 
+  dplyr::select(`Grupo Etário`,`Porcentagem`) |> 
+  gt::gt() |> 
+  gt::as_raw_html()
+
+# Tabela da segunda dose
+
+segunda_dose_m <- vacina_scb |> 
+  dplyr::filter(dose_vacina==2,
+                sexo=="M") |>
+  dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
+                `Grupo Etário`=grupo_idade) |>
+  dplyr::arrange(grupo_idade) |> 
+  dplyr::ungroup() |> 
+  dplyr::select(`Grupo Etário`,`Porcentagem`) |>
+  gt::gt() |> 
+  gt::as_raw_html()
+
+# Apresentando as duas tabelas
+
+data.frame(primeira_dose_m,segunda_dose_m) |> 
+  gt::gt() |> 
+  gt::fmt_markdown(columns=dplyr::everything()) |> 
+  gt::cols_label(primeira_dose_m="% com 1ª dose aplicada",
+                 segunda_dose_m="% com 2ª dose aplicada") |>
+  gt::tab_footnote("Alguns valores são acima de 100% pois a pop. utilizada para cálculo se trata de uma estimativa",
+                   locations = gt::cells_title()) |> 
+  gt::tab_header(
+    title=gt::md("**Vacinação da População Masculina de Sorocaba**"),
+    subtitle=gt::md("Fonte: Ministério da Saúde 2020 e basedosdados.org")
+  )
+
+```
+
+### Tabela (População Geral)
+
+```{r}
+# Apresentando porcentagems divididas por faixa etaria em tabela
+# (pop. geral)
+
+# Tabela da primeira dose
+
+primeira_dose <- vacina_scb |> 
+  dplyr::filter(dose_vacina==1) |>
+  dplyr::group_by(grupo_idade) |>
+  dplyr::summarise(populacao=sum(populacao),
+                   n=sum(n),
+                   porc=round(n/populacao * 100,digits=2)) |> 
+  dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
+                `Grupo Etário`=grupo_idade) |>
+  dplyr::arrange(grupo_idade) |> 
+  dplyr::ungroup() |> 
+  dplyr::select(`Grupo Etário`,`Porcentagem`) |> 
+  gt::gt() |> 
+  gt::as_raw_html()
+
+# Tabela da segunda dose
+
+segunda_dose <- vacina_scb |> 
+  dplyr::filter(dose_vacina==2) |>
+  dplyr::group_by(grupo_idade) |>
+  dplyr::summarise(populacao=sum(populacao),
+                   n=sum(n),
+                   porc=round(n/populacao * 100,digits=2)) |> 
+  dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
+                `Grupo Etário`=grupo_idade) |>
+  dplyr::arrange(grupo_idade) |> 
+  dplyr::ungroup() |> 
+  dplyr::select(`Grupo Etário`,`Porcentagem`) |> 
+  gt::gt() |> 
+  gt::as_raw_html()
+
+# Apresentando as duas tabelas
+
+data.frame(primeira_dose,segunda_dose) |> 
+  gt::gt() |> 
+  gt::fmt_markdown(columns=dplyr::everything()) |> 
+  gt::cols_label(primeira_dose="% com 1ª dose aplicada",
+                 segunda_dose="% com 2ª dose aplicada") |>
+  gt::tab_footnote("Alguns valores são acima de 100% pois a pop. utilizada para cálculo se trata de uma estimativa",
+                   locations = gt::cells_title()) |> 
+  gt::tab_header(
+    title=gt::md("**Vacinação da População de Sorocaba**"),
+    subtitle=gt::md("Fonte: Ministério da Saúde 2020 e basedosdados.org")
+  )
+
+```
+
 
 Column {data-width=150}
 -------------------------------------
