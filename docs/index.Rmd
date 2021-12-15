@@ -1,5 +1,5 @@
 ---
-title: "A COVID-19 em Sorocaba - em construção"
+title: "A COVID-19 em Sorocaba"
 bibliography: refs/ref.bib
 csl: refs/abnt.csl
 nocite: '@*'
@@ -20,12 +20,175 @@ library(flexdashboard)
 # Lendo dados
 
 covid_sorocaba <- readr::read_rds("data/covid_sorocaba.rds")
+covid_sp <- readr::read_rds("data/covid_sp.rds")
 
+# Icones de apresentacao 
+
+htmltools::tagList(fontawesome::fa_html_dependency())
 
 ```
 
 Contágio
 ================================================================
+
+Column {.tabset}
+-------------------------------------
+
+### Casos Diários
+
+```{r}
+
+# Casos Diários de sorocaba com media movel de 7 e 14 dias
+
+casos_diarios <- covid_sorocaba |>
+  dplyr::rename(`Dia`=date,
+                `Casos Diários`=new_confirmed) |>
+  dplyr::mutate(
+    `Média Móvel - 7 dias`=zoo::rollmean(`Casos Diários`,k=7,na.pad = TRUE),
+    `Média Móvel - 14 dias`=zoo::rollmean(`Casos Diários`,k=14,na.pad = TRUE)
+    ) |>
+  ggplot2::ggplot(ggplot2::aes(y=`Casos Diários`,x=`Dia`))+
+  ggplot2::geom_line(ggplot2::aes(fill="Casos Diários"),alpha=0.3)+
+  ggplot2::geom_line(
+    ggplot2::aes(y=`Média Móvel - 7 dias`,
+                 fill="Média Móvel - 7 dias"),
+    color="red")+
+  ggplot2::geom_line(
+    ggplot2::aes(y=`Média Móvel - 14 dias`,
+                 fill="Média Móvel - 14 dias"),
+    color="blue")+
+  ggplot2::labs(
+    title="Casos Diários na cidade de Sorocaba \ndevido à COVID-19"
+    )+
+  ggplot2::scale_y_continuous(breaks = seq(0,1000,100))+
+  ggplot2::theme_minimal()
+
+casos_diarios |> plotly::ggplotly()
+
+```
+
+### Casos Acumulados
+
+```{r}
+
+# Casos Acumulados de sorocaba comparada com cidades da regiao
+
+cidades <- c("Sorocaba", "Tatuí", "Itapetininga", "Votorantim",
+             "Itu", "São Roque", "Boituva", "Tietê", "Campinas",
+             "Piedade")
+
+casos_acumulados <- covid_sp |>
+  dplyr::filter(city %in% cidades) |>
+  dplyr::group_by(city) |>
+  dplyr::rename(`Dia`=date,
+                `Total de Casos`=last_available_confirmed,
+                `Cidade`=city) |>
+  ggplot2::ggplot(ggplot2::aes(y=`Total de Casos`,x=`Dia`,
+                               color=`Cidade`))+
+  ggplot2::geom_line()+
+  ggplot2::labs(
+    title="Casos Acumulados na cidade de Sorocaba \ncomparada com outras cidades"
+  )+
+  ggplot2::theme_minimal()
+
+casos_acumulados |> plotly::ggplotly()
+
+```
+
+Column {data-width=150}
+-------------------------------------
+
+###
+
+```{r}
+
+# Casos por mil habitantes
+
+((max(covid_sorocaba$last_available_confirmed)/687357)*1000)  |>
+  round(digits=2) |> 
+  flexdashboard::valueBox(
+    caption="casos por mil habitantes",
+    icon="fas fa-users-slash"
+  )
+
+```
+
+###
+
+```{r}
+# Data com mais casos
+
+covid_sorocaba |> 
+  dplyr::filter(
+    new_confirmed==max(covid_sorocaba$new_confirmed)
+  ) |> 
+  dplyr::select(date) |>
+  dplyr::pull() |> 
+  format("%d/%m/%y") |> 
+  flexdashboard::valueBox(
+    caption="data com maior número de casos",
+    icon="far fa-calendar-alt"
+  )
+
+```
+
+###
+
+```{r}
+# Mês com mais casos
+
+covid_sorocaba |> 
+  dplyr::mutate(
+    month=lubridate::floor_date(date, "month")
+  )|>
+  dplyr::group_by(month) |> 
+  dplyr::summarise(
+    total_cases=sum(new_confirmed)
+  ) |> 
+  dplyr::filter(
+    total_cases==max(total_cases)
+  ) |> 
+  dplyr::select(month) |>
+  dplyr::pull() |> 
+  format("%m/%y") |> 
+  flexdashboard::valueBox(
+    caption="mês com maior número de casos",
+    icon="far fa-calendar-alt"
+  )
+
+```
+
+###
+
+```{r}
+# Dias consecutivos sem diagnósticos
+
+dias_consec_casos <- covid_sorocaba |> 
+  dplyr::mutate(
+    Contagem= stats::ave(new_confirmed, 
+                         data.table::rleid(new_confirmed), FUN=seq_along)
+  ) |>
+  dplyr::filter(
+    new_confirmed==0
+  ) |> 
+  dplyr::select(Contagem)
+
+dias_consec_casos |> 
+  dplyr::slice_tail() |> 
+  dplyr::pull() |> 
+  flexdashboard::valueBox(
+    caption="dias consecutivos sem casos",
+    icon= "fas fa-check-circle",
+    color="success"
+  )
+
+```
+
+### Informações
+
+* Os dados referentes aos contágios foram retirados do site [brasil.io](https://brasil.io/dataset/covid19/). Para mais informações sobre a manipulação deles, acesse o [repositório do dashboard no github](https://github.com/victordogo/covid19-sorocaba/tree/master/data-raw);
+* Alguma dúvida? Envie um e-mail para victordogo@gmail.com ou acesse a aba ["Glossário"](#glossário);
+* **Atualizado pela última vez em `r format(Sys.Date(), '%d/%m/%y')` às `r format(Sys.time(), '%R')` BRT.**
 
 Mortalidade
 ================================================================
@@ -33,17 +196,18 @@ Mortalidade
 Column {.tabset}
 -------------------------------------
 
-### Mortes Diárias (fonte: (fonte: [brasil.io](https://brasil.io/dataset/covid19/))
+### Mortes Diárias
 
 ```{r}
+
+# Mortes diarias de sorocaba com media movel de 7 e 14 dias
 
 mortes_diarias <- covid_sorocaba |>
   dplyr::rename(`Dia`=date,
                 `Mortes Diárias`=new_deaths) |>
   dplyr::mutate(
     `Média Móvel - 7 dias`=zoo::rollmean(`Mortes Diárias`,k=7,na.pad = TRUE),
-    `Média Móvel - 14 dias`=zoo::rollmean(`Mortes Diárias`,k=14,na.pad = TRUE),
-    `Média Móvel - 21 dias`=zoo::rollmean(`Mortes Diárias`,k=21,na.pad = TRUE)
+    `Média Móvel - 14 dias`=zoo::rollmean(`Mortes Diárias`,k=14,na.pad = TRUE)
     ) |>
   ggplot2::ggplot(ggplot2::aes(y=`Mortes Diárias`,x=`Dia`))+
   ggplot2::geom_line(ggplot2::aes(fill="Mortes Diárias"),alpha=0.3)+
@@ -65,19 +229,28 @@ mortes_diarias |> plotly::ggplotly()
 
 ```
 
-### Mortes Acumuladas (fonte: [brasil.io](https://brasil.io/dataset/covid19/))
+### Mortes Acumuladas
 
 ```{r}
 
-mortes_acumuladas <- covid_sorocaba |>
+# Mortes acumuladas de sorocaba comparada com cidades da regiao
+
+cidades <- c("Sorocaba", "Tatuí", "Itapetininga", "Votorantim",
+             "Itu", "São Roque", "Boituva", "Tietê", "Campinas",
+             "Piedade")
+
+mortes_acumuladas <- covid_sp |>
+  dplyr::filter(city %in% cidades) |>
+  dplyr::group_by(city) |>
   dplyr::rename(`Dia`=date,
-                `Total de Mortes`=last_available_deaths) |>
-  ggplot2::ggplot(ggplot2::aes(y=`Total de Mortes`,x=`Dia`))+
+                `Total de Mortes`=last_available_deaths,
+                `Cidade`=city) |>
+  ggplot2::ggplot(ggplot2::aes(y=`Total de Mortes`,x=`Dia`,
+                               color=`Cidade`))+
   ggplot2::geom_line()+
   ggplot2::labs(
-    title="Mortes Acumuladas na cidade de Sorocaba \ncausadas pela COVID-19"
+    title="Mortes Acumuladas na cidade de Sorocaba \ncomparada com outras cidades"
   )+
-  ggplot2::scale_y_continuous(breaks = seq(0,3000,200))+
   ggplot2::theme_minimal()
 
 mortes_acumuladas |> plotly::ggplotly()
@@ -87,15 +260,104 @@ mortes_acumuladas |> plotly::ggplotly()
 Column {data-width=150}
 -------------------------------------
 
-### Teste 1
+###
 
 ```{r}
 
+# Mortes por mil habitantes
+
+((max(covid_sorocaba$last_available_deaths)/687357)*1000)  |>
+  round(digits=2) |> 
+  flexdashboard::valueBox(
+    caption="mortes por mil habitantes",
+    icon="fas fa-users-slash"
+  )
+
 ```
+
+###
+
+```{r}
+# Data com mais mortes
+
+covid_sorocaba |> 
+  dplyr::filter(
+    new_deaths==max(covid_sorocaba$new_deaths)
+  ) |> 
+  dplyr::select(date) |>
+  dplyr::pull() |> 
+  format("%d/%m/%y") |> 
+  flexdashboard::valueBox(
+    caption="data com maior número de mortes",
+    icon="far fa-calendar-alt"
+  )
+
+```
+
+###
+
+```{r}
+# Mês com mais mortes
+
+covid_sorocaba |> 
+  dplyr::mutate(
+    month=lubridate::floor_date(date, "month")
+  )|>
+  dplyr::group_by(month) |> 
+  dplyr::summarise(
+    total_deaths=sum(new_deaths)
+  ) |> 
+  dplyr::filter(
+    total_deaths==max(total_deaths)
+  ) |> 
+  dplyr::select(month) |>
+  dplyr::pull() |> 
+  format("%m/%y") |> 
+  flexdashboard::valueBox(
+    caption="mês com maior número de mortes",
+    icon="far fa-calendar-alt"
+  )
+
+```
+
+###
+
+```{r}
+# Dias consecutivos sem mortes
+
+dias_consec_deaths <- covid_sorocaba |> 
+  dplyr::mutate(
+    Contagem= stats::ave(new_deaths, 
+                         data.table::rleid(new_deaths), FUN=seq_along)
+  ) |>
+  dplyr::filter(
+    new_deaths==0
+  ) |> 
+  dplyr::select(Contagem)
+
+dias_consec_deaths |> 
+  dplyr::slice_tail() |> 
+  dplyr::pull() |> 
+  flexdashboard::valueBox(
+    caption="dias consecutivos sem mortes",
+    icon= "fas fa-check-circle",
+    color="success"
+  )
+
+```
+
+### Informações
+
+* Os dados referentes à mortalidade foram retirados do site [brasil.io](https://brasil.io/dataset/covid19/). Para mais informações sobre a manipulação deles, acesse o [repositório do dashboard no github](https://github.com/victordogo/covid19-sorocaba/tree/master/data-raw);
+* Alguma dúvida? Envie um e-mail para victordogo@gmail.com ou acesse a aba ["Glossário"](#glossário);
+* **Atualizado pela última vez em `r format(Sys.Date(), '%d/%m/%y')` às `r format(Sys.time(), '%R')` BRT.**
 
 
 Vacinação
 ================================================================
+
+Glossário
+======================================================
 
 Sobre
 ======================================================
@@ -106,7 +368,7 @@ Este é o dashboard "A COVID-19 em Sorocaba". Ele é o resultado do Projeto de E
 
 Ele é realizado por Victor Alves Dogo Martins (aluno do DEs - Departamento de Estatística da UFSCar - Campus São Carlos), sob orientação da Profa. Dra. Andreza Aparecida Palma (vinculada ao DEc - Departamento de Economia da UFSCar - Campus Sorocaba). 
 
-O objetivo deste projeto é fornecer um dashboard conciso e de fácil compreensão com dados relativos à pandemia da COVID-19 na cidade de Sorocaba - SP. Estes dados, ao longo do tempo, consistem em casos confirmados, mortes confirmadas e em esforços da campanha de vacinação na cidade. Ele pode ser conferido em: (link).
+O objetivo deste projeto é fornecer um dashboard conciso e de fácil compreensão com dados relativos à pandemia da COVID-19 na cidade de Sorocaba - SP. Estes dados, ao longo do tempo, consistem em casos confirmados, mortes confirmadas e em esforços da campanha de vacinação na cidade.
 
 Todos os dados, gráficos e formatação do dashboard são construídos com auxílio da linguagem de programação estatística R:
 

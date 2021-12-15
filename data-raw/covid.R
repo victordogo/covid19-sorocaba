@@ -4,13 +4,16 @@
 
 ## Dados relativos a vacinacao nao serao encontrados neste banco de dados.
 
-covid <- readr::read_csv("https://data.brasil.io/dataset/covid19/caso_full.csv.gz") |>
+covid_sp <- readr::read_csv("https://data.brasil.io/dataset/covid19/caso_full.csv.gz") |>
+  dplyr::filter(state=="SP") |>
   dplyr::select(
     city, date, estimated_population, last_available_confirmed,
     last_available_deaths, new_confirmed, new_deaths
   )
 
-covid_sorocaba <- covid |>
+covid_sp |> readr::write_rds("docs/data/covid_sp.rds")
+
+covid_sorocaba <- covid_sp |>
   dplyr::filter(city=="Sorocaba")
 
 covid_sorocaba |> readr::write_rds("docs/data/covid_sorocaba.rds")
