@@ -353,6 +353,200 @@ dias_consec_deaths |>
 Vacinação
 ================================================================
 
+Column {.tabset}
+-------------------------------------
+
+### Vacinação da Cidade de Sorocaba
+
+```{r}
+# Vacinação na cidade de sorocaba
+
+cores <- c("População estimada (Masculino)" = "#ffc3a4",
+           "1ª Dose (M)" = "#EE5A45",
+           "2ª Dose ou Única (M)" = "#790000",
+           "População estimada (Feminino)" = "#7bd1cb",
+           "1ª Dose (F)" = "#1E8F89",
+           "2ª Dose ou Única (F)" = "#00322f")
+
+grafico_vacinacao <- vacina_scb |>
+  ggplot2::ggplot(ggplot2::aes(x = grupo_idade, y=n_grafico))+
+  ggplot2::geom_bar(data=vacina_scb[vacina_scb$sexo == "F",] |>
+                      dplyr::distinct(populacao_grafico, .keep_all = TRUE),
+                    ggplot2::aes(x = grupo_idade,
+                                 y = populacao_grafico,
+                                 fill = "População estimada (Feminino)"),
+                    stat = "identity")+
+  ggplot2::geom_bar(data=vacina_scb[vacina_scb$sexo == "M",] |>
+                      dplyr::distinct(populacao_grafico, .keep_all = TRUE),
+                    ggplot2::aes(x = grupo_idade,
+                                 y = populacao_grafico,
+                                 fill = "População estimada (Masculino)"),
+                    stat = "identity")+
+  ggplot2::geom_bar(data=vacina_scb[vacina_scb$sexo == "F",] |>
+             dplyr::filter(dose_vacina == '1'),
+             ggplot2::aes(fill = "1ª Dose (F)"),
+             stat = "identity")+
+  ggplot2::geom_bar(data=vacina_scb[vacina_scb$sexo == "M",] |>
+                      dplyr::filter(dose_vacina == '1'),
+                      ggplot2::aes(fill = "1ª Dose (M)"),
+                      stat = "identity")+
+  ggplot2::geom_bar(data=vacina_scb[vacina_scb$sexo == "F",] |>
+                      dplyr::filter(dose_vacina == '2'),
+                    ggplot2::aes(fill = "2ª Dose ou Única (F)"),
+                    stat = "identity")+
+  ggplot2::geom_bar(data=vacina_scb[vacina_scb$sexo == "M",] |>
+                      dplyr::filter(dose_vacina == '2'),
+                    ggplot2::aes(fill = "2ª Dose ou Única (M)"),
+                    stat = "identity")+
+  ggplot2::annotate("text",
+            x="0-4 anos", y=5000,
+            label = "Feminino",
+            hjust = 0,
+            fontface = "bold"
+  )+
+   ggplot2::annotate("text",
+            x="0-4 anos", y=-5000,
+            label = "Masculino",
+            hjust = 1,
+            fontface = "bold"
+  )+
+  ggplot2::labs(x="Faixa Etária",y="Vacinados",
+                title="Vacinação na cidade de Sorocaba")+
+  ggplot2::scale_y_continuous(
+    breaks=c(-30000,-25000,-20000, -15000, -10000, -5000, 0,
+             5000, 10000, 15000, 20000, 25000, 30000),
+    labels = c(
+      "-30000"="30.000",
+      "-25000"="25.000",
+      "-20000"="20.000",
+      "-15000"="15.000",
+      "-10000"="10.000",
+      "-5000"="5.000",
+      "0"="0",
+      "5000"="5.000",
+      "10000"="10.000",
+      "15000"="15.000",
+      "20000"="20.000",
+      "25000"="25.000",
+      "30000"="30.000"
+    )
+  )+
+  ggplot2::scale_fill_manual(values = cores,
+                             limits = c("População estimada (Masculino)",
+                                        "1ª Dose (M)",
+                                        "2ª Dose ou Única (M)",
+                                        "2ª Dose ou Única (F)",
+                                        "1ª Dose (F)",
+                                        "População estimada (Feminino)"))+
+  ggplot2::guides(fill=ggplot2::guide_legend(nrow=1,byrow=TRUE))+
+  ggplot2::theme_minimal()+
+  ggplot2::theme(
+    plot.title = ggplot2::element_text(hjust = 0.5, size = 16),
+    plot.subtitle = ggplot2::element_text(hjust = 0.5),
+    axis.text = ggplot2::element_text(size = 12),
+    axis.title = ggplot2::element_text(size = 12),
+    plot.background = ggplot2::element_rect(fill = "white", color = "white")
+  )+
+  ggplot2::coord_flip()
+
+grafico_vacinacao |> plotly::ggplotly()
+
+```
+
+Column {data-width=150}
+-------------------------------------
+
+###
+
+```{r}
+# Porcentagem da população com 1 dose
+
+vacina_scb |>
+  dplyr::group_by(dose_vacina) |> 
+  dplyr::filter(dose_vacina==1) |> 
+  dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
+  dplyr::select(porc_tot) |> 
+  dplyr::pull() |> 
+  round(2) |> 
+  paste0("%") |>
+  flexdashboard::valueBox(
+    caption="da população com a 1ª dose",
+    icon= "fas fa-syringe",
+    color="success"
+  )
+  
+```
+
+###
+
+```{r}
+# Porcentagem da população com 2 dose
+
+vacina_scb |>
+  dplyr::group_by(dose_vacina) |> 
+  dplyr::filter(dose_vacina==2) |> 
+  dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
+  dplyr::select(porc_tot) |> 
+  dplyr::pull() |> 
+  round(2) |> 
+  paste0("%") |>
+  flexdashboard::valueBox(
+    caption="da população com a 2ª dose",
+    icon= "fas fa-syringe",
+    color="success"
+  )
+  
+```
+
+###
+
+```{r}
+# Porcentagem de +15 anos com 1 dose
+
+vacina_scb[-c(1:7),] |>
+  dplyr::group_by(dose_vacina) |> 
+  dplyr::filter(dose_vacina==1) |> 
+  dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
+  dplyr::select(porc_tot) |> 
+  dplyr::pull() |> 
+  round(2) |> 
+  paste0("%") |>
+  flexdashboard::valueBox(
+    caption="da população acima de 15 anos com a 1ª dose",
+    icon= "fas fa-syringe",
+    color="success"
+  )
+  
+```
+
+###
+
+```{r}
+# Porcentagem de +15 anos com 1 dose
+
+vacina_scb[-c(1:7),] |>
+  dplyr::group_by(dose_vacina) |> 
+  dplyr::filter(dose_vacina==2) |> 
+  dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
+  dplyr::select(porc_tot) |> 
+  dplyr::pull() |> 
+  round(2) |> 
+  paste0("%") |>
+  flexdashboard::valueBox(
+    caption="da população acima de 15 anos com a 2ª dose",
+    icon= "fas fa-syringe",
+    color="success"
+  )
+  
+```
+
+### Informações
+
+* Os dados referentes à vacinação foram retirados do site [basedosdados.org](https://basedosdados.org/dataset/br-ms-vacinacao-covid19). Para mais informações sobre a manipulação deles, acesse o [repositório do dashboard no github](https://github.com/victordogo/covid19-sorocaba/tree/master/data-raw);
+* O gráfico de vacinação foi inspirado no trabalho de Bruno Mioto no [seguinte post;](https://medium.com/basedosdados/analisando-dados-de-vacina%C3%A7%C3%A3o-contra-covid-19-com-a-bd-49fe3db8c7f4)
+* Alguma dúvida? Envie um e-mail para victordogo@gmail.com ou acesse a aba ["Glossário"](#glossário);
+* **Atualizado pela última vez em `r format(Sys.Date(), '%d/%m/%y')` às `r format(Sys.time(), '%R')` BRT.**
+
 Glossário
 ======================================================
 
