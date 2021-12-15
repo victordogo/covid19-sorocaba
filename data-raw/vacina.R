@@ -85,4 +85,4 @@ vacina_scb$grupo_idade <- factor(vacina_scb$grupo_idade,
                                              "75-79 anos",
                                              "80_mais"))
 
-vacina_scb |> readr::write_rds("docs/data/vacina_scb")
+vacina_scb |> readr::write_rds("docs/data/vacina_scb.rds")

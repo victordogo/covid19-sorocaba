@@ -21,6 +21,7 @@ library(flexdashboard)
 
 covid_sorocaba <- readr::read_rds("data/covid_sorocaba.rds")
 covid_sp <- readr::read_rds("data/covid_sp.rds")
+vacina_scb <- readr::read_rds("data/vacina_scb.rds")
 
 # Icones de apresentacao 
 
