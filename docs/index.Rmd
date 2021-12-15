@@ -33,7 +33,7 @@ Mortalidade
 Column {.tabset}
 -------------------------------------
 
-### Mortes Diárias (fonte: brasil.io)
+### Mortes Diárias (fonte: (fonte: [brasil.io](https://brasil.io/dataset/covid19/))
 
 ```{r}
 
@@ -65,7 +65,7 @@ mortes_diarias |> plotly::ggplotly()
 
 ```
 
-### Mortes Acumuladas (fonte: brasil.io)
+### Mortes Acumuladas (fonte: [brasil.io](https://brasil.io/dataset/covid19/))
 
 ```{r}
 
@@ -99,6 +99,8 @@ Vacinação
 
 Sobre
 ======================================================
+
+**Atualizado pela última vez em `r format(Sys.Date(), '%d/%m/%y')` às `r format(Sys.time(), '%R')` BRT.**
 
 Este é o dashboard "A COVID-19 em Sorocaba". Ele é o resultado do Projeto de Extensão  "Análise e Visualização dos Dados da Pandemia na Cidade de Sorocaba", sob fomento da ProEx - Pró Reitoria de Extensão da UFSCar - Universidade Federal de São Carlos.
 
