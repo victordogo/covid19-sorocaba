@@ -110,7 +110,7 @@ Column {data-width=150}
   round(digits=2) |> 
   flexdashboard::valueBox(
     caption="casos por mil habitantes",
-    icon="fas fa-users-slash"
+    icon="fas fa-viruses"
   )
 
 ```
@@ -267,7 +267,7 @@ Column {data-width=150}
   round(digits=2) |> 
   flexdashboard::valueBox(
     caption="mortes por mil habitantes",
-    icon="fas fa-users-slash"
+    icon="fas fa-viruses"
   )
 
 ```
@@ -356,7 +356,7 @@ Vacinação
 Column {.tabset}
 -------------------------------------
 
-### Vacinação da Cidade de Sorocaba
+### Vacinação da Cidade de Sorocaba - Gráfico
 
 ```{r}
 # Vacinação na cidade de sorocaba
@@ -452,6 +452,8 @@ grafico_vacinacao <- vacina_scb |>
 grafico_vacinacao |> plotly::ggplotly()
 
 ```
+
+### Vacinação da Cidade de Sorocaba - Tabela
 
 Column {data-width=150}
 -------------------------------------
