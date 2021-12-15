@@ -28,6 +28,12 @@ htmltools::tagList(fontawesome::fa_html_dependency())
 
 ```
 
+```{css info-style, echo = FALSE}
+  .chart-shim {
+    overflow-y: scroll;
+    }
+```
+
 Contágio
 ================================================================
 
