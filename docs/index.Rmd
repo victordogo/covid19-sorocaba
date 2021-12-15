@@ -14,9 +14,12 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(ggplot2)
-library(dplyr)
-library(plotly)
+
+# Lendo dados
+
+covid_sorocaba <- readr::read_rds("data/covid_sorocaba.rds")
+
+
 ```
 
 Contágio
@@ -24,6 +27,62 @@ Contágio
 
 Mortalidade
 ================================================================
+
+Column {.tabset}
+-------------------------------------
+
+### Mortes Diárias
+
+```{r}
+
+mortes_diarias <- covid_sorocaba |>
+  dplyr::rename(`Dia`=date,
+                `Mortes Diárias`=new_deaths) |>
+  dplyr::mutate(
+    `Média Móvel - 7 dias`=zoo::rollmean(`Mortes Diárias`,k=7,na.pad = TRUE),
+    `Média Móvel - 14 dias`=zoo::rollmean(`Mortes Diárias`,k=14,na.pad = TRUE),
+    `Média Móvel - 21 dias`=zoo::rollmean(`Mortes Diárias`,k=21,na.pad = TRUE)
+    ) |>
+  ggplot2::ggplot(ggplot2::aes(y=`Mortes Diárias`,x=`Dia`))+
+  ggplot2::geom_line(ggplot2::aes(fill="Mortes Diárias"),alpha=0.3)+
+  ggplot2::geom_line(
+    ggplot2::aes(y=`Média Móvel - 7 dias`,
+                 fill="Média Móvel - 7 dias"),
+    color="red")+
+  ggplot2::geom_line(
+    ggplot2::aes(y=`Média Móvel - 14 dias`,
+                 fill="Média Móvel - 14 dias"),
+    color="blue")+
+  ggplot2::labs(
+    title="Mortes Diárias na cidade de Sorocaba \ncausadas pela COVID-19"
+    )+
+  ggplot2::scale_y_continuous(breaks = seq(0,85,5))+
+  ggplot2::theme_minimal()
+
+mortes_diarias |> plotly::ggplotly()
+
+```
+
+### Mortes Acumuladas
+
+```{r}
+
+mortes_acumuladas <- covid_sorocaba |>
+  dplyr::rename(`Dia`=date,
+                `Total de Mortes`=last_available_deaths) |>
+  ggplot2::ggplot(ggplot2::aes(y=`Total de Mortes`,x=`Dia`))+
+  ggplot2::geom_line()+
+  ggplot2::labs(
+    title="Mortes Acumuladas na cidade de Sorocaba \ncausadas pela COVID-19"
+  )+
+  ggplot2::scale_y_continuous(breaks = seq(0,3000,200))+
+  ggplot2::theme_minimal()
+
+mortes_acumuladas |> plotly::ggplotly()
+
+```
+
+
 
 Vacinação
 ================================================================
