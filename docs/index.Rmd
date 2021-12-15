@@ -12,6 +12,8 @@ output:
     vertical_layout: fill
 ---
 
+<style type="text/css"> .sidebar { overflow: auto; } </style>
+
 ```{r setup, include=FALSE}
 library(flexdashboard)
 
@@ -31,7 +33,7 @@ Mortalidade
 Column {.tabset}
 -------------------------------------
 
-### Mortes Diárias
+### Mortes Diárias (fonte: brasil.io)
 
 ```{r}
 
@@ -63,7 +65,7 @@ mortes_diarias |> plotly::ggplotly()
 
 ```
 
-### Mortes Acumuladas
+### Mortes Acumuladas (fonte: brasil.io)
 
 ```{r}
 
@@ -82,6 +84,14 @@ mortes_acumuladas |> plotly::ggplotly()
 
 ```
 
+Column {data-width=150}
+-------------------------------------
+
+### Teste 1
+
+```{r}
+
+```
 
 
 Vacinação
