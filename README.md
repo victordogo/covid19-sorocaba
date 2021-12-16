@@ -16,14 +16,15 @@ O objetivo deste projeto é fornecer um *dashboard* conciso e de fácil compreen
 Todos os dados, gráficos e formatação do dashboard são construídos com auxílio da linguagem de programação estatística R:
 
 * O dashboard é construído com o auxílio do pacote [`{flexdashboard}`](https://pkgs.rstudio.com/flexdashboard/);
-* Os dados são tratados com auxílio dos pacotes [`{dplyr}`](https://dplyr.tidyverse.org/) e [`{tidyr}`](https://tidyr.tidyverse.org/);
+* Os dados são tratados com auxílio dos pacotes do [tidyverse](https://www.tidyverse.org/);
 * Os gráficos são produzidos, em suas versões estáticas, com auxílio do pacote [`{ggplot2}`](https://ggplot2.tidyverse.org/). Depois, são transformados em versões interativas com auxílio do pacote [`{plotly}`](https://plotly.com/r/);
 * O site é publicado com auxílio do GitHub Pages, com automatização da leitura e tratamento diário das bases de dados através do GitHub Actions;
-* As bases de dados são retiradas de (inserir sites).
+* As bases de dados são retiradas dos sites brasil.io (no caso de dados relativos a casos e mortes) e basedosdados.org (no caso de dados da vacinação). Os dados em si não são criados por eles, mas eles constituem uma **importante parte deste trabalho** devido ao fato de disponibilizarem diversas bases ora bagunçadas e difíceis de trabalhar em formatos muito mais amigáveis e que agilizam o processo de análise.
+
 
 Todos os códigos utilizados podem ser vistos no repositório do site.
 
 ## Contato
 
-Quaisquer dúvidas, críticas, elogios e sugestões podem ser encaminhadas por e-mail para: teste, substituir depois.
+Quaisquer dúvidas, críticas, elogios e sugestões podem ser encaminhadas por e-mail para victordogo@gmail.com .
 

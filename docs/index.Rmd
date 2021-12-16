@@ -701,6 +701,15 @@ vacina_scb[-c(1:7),] |>
 Glossário
 ======================================================
 
+Aqui estão presentes alguns termos e conceitos que podem não ser acessíveis para pessoas sem o hábito da leitura, criação e/ou interpretação de textos e relatórios estatísticos. Acha que faltam explicações? Envie um e-mail para victordogo@gmail.com sobre sua dúvida e, a depender do caso, ela será adicionada aqui!
+
+* **Casos ou Mortes Diárias:** são o número de casos diagnosticados ou de mortes ocorridas **única e exclusivamente** num determinado dia;
+* **Casos ou Mortes Acumuladas:** são o número de casos diagnosticados ou de mortes ocorridas **até** um determinado dia. Exemplificando, se no dia 1 temos 3 mortes diárias, no dia 2 temos 7 mortes diárias e no dia 3 temos 5 mortes diárias, o número de mortes acumuladas do dia 3 é $3+7+5 = 15$ mortes;
+* **Estimativa Populacional:** temos no Brasil que os Censos Demográficos ocorrem (pelo menos em teoria) a cada 10 anos. No entanto, é de interesse de entidades governamentais terem uma ideia do tamanho da população no período entre censos também: para isso, instituições como o IBGE utilizam técnicas para **estimar** o tamanho da população. Não é o valor exato da população, mas uma aproximação satisfatória o bastante para que norteie políticas públicas e outras questões;
+* **Médias Móveis:** são uma maneira de suavizar a curva de um determinado banco de dados para que possamos analisar a tendência dos valores observados sem que as variações atrapalhem a análise. São calculadas de acordo com uma ordem $k$ (em nosso caso, utilzamos $k$ = 7 e 14 dias): faz-se a média aritmética simples de valores no ponto $t$ e todos os $t-(k-1)$ pontos anteriores. Se a linha das médias móveis está em queda, então existem indícios de que a variável em questão (mortes ou casos diários) está em queda também;
+* **Ocorrências a cada mil habitantes:** é um indicador bastante útil para termos ideia do quão boa ou ruim é a situação da cidade. Exemplificando, pensemos numa cidade que possui 10 mortes para cada mil habitantes: se dividirmos por dez, temos 1 morte para cada cem habitantes (ou 1% de mortes proporcionais à população); se dividirmos por cem, temos que, para cada dez pessoas, 0.1 morrem devido à doença (obviamente para fins de análise: não é possível que um décimo de pessoa morra!).
+
+
 Sobre
 ======================================================
 
@@ -715,13 +724,13 @@ O objetivo deste projeto é fornecer um dashboard conciso e de fácil compreens�
 Todos os dados, gráficos e formatação do dashboard são construídos com auxílio da linguagem de programação estatística R:
 
 * O dashboard é construído com o auxílio do pacote [`{flexdashboard}`](https://pkgs.rstudio.com/flexdashboard/);
-* Os dados são tratados com auxílio dos pacotes [`{dplyr}`](https://dplyr.tidyverse.org/) e [`{tidyr}`](https://tidyr.tidyverse.org/);
+* Os dados são tratados com auxílio dos pacotes do [tidyverse](https://www.tidyverse.org/);
 * Os gráficos são produzidos, em suas versões estáticas, com auxílio do pacote [`{ggplot2}`](https://ggplot2.tidyverse.org/). Depois, são transformados em versões interativas com auxílio do pacote [`{plotly}`](https://plotly.com/r/);
 * O site é publicado com auxílio do GitHub Pages, com automatização da leitura e tratamento diário das bases de dados através do GitHub Actions;
-* As bases de dados são retiradas de (inserir sites).
+* As bases de dados são retiradas dos sites brasil.io (no caso de dados relativos a casos e mortes) e basedosdados.org (no caso de dados da vacinação). Os dados em si não são criados por eles, mas eles constituem uma **importante parte deste trabalho** devido ao fato de disponibilizarem diversas bases ora bagunçadas e difíceis de trabalhar em formatos muito mais amigáveis e que agilizam o processo de análise.
 
 
-Quaisquer dúvidas, críticas, elogios e sugestões podem ser encaminhadas por e-mail para: teste, substituir depois.
+Quaisquer dúvidas, críticas, elogios e sugestões podem ser encaminhadas por e-mail para victordogo@gmail.com .
 
 
 Você pode visualizar o repositório deste site em [victordogo/covid19-sorocaba](https://github.com/victordogo/covid19-sorocaba) no GitHub.
