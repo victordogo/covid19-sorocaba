@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("dplyr", "ggplot2", "flexdashboard", "tidyr", "plotly", "rmarkdown", "readr", "htmltools", "fontawesome", "data.table", "stats", "gt"))
+          install.packages(c("dplyr", "ggplot2", "flexdashboard", "tidyr", "plotly", "rmarkdown", "readr", "htmltools", "fontawesome", "data.table", "stats", "gt", "basedosdados"))
         shell: Rscript {0}
 
       - name: Updating data
