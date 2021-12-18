@@ -10,10 +10,18 @@ jobs:
   auto-update:
     name: Atualizacao automatica do dashboard
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        r-version: [4.1.2]
+
     steps:
-      - uses: actions/checkout@master
-      - uses: r-lib/actions/setup-r@master
-      - uses: r-lib/actions/setup-pandoc@master
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: ${{ matrix.r-version }}
+
+      - uses: r-lib/actions/setup-pandoc@v1
 
       - name: Install dependencies
         run: |
