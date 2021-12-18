@@ -23,10 +23,19 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
-      - name: Install dependencies
-        run: |
-          install.packages(c("dplyr", "ggplot2", "flexdashboard", "tidyr", "plotly", "rmarkdown", "readr", "htmltools", "fontawesome", "data.table", "stats", "gt", "basedosdados"))
+      - name: Cache Packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/share/renv
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-renv-
+
+      - name: Restore packages
         shell: Rscript {0}
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore()
 
       - name: Updating data
         env:
