@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: r-lib/actions/setup-R@master
+      - uses: r-lib/actions/setup-r@master
       - uses: r-lib/actions/setup-pandoc@master
 
       - name: Install dependencies
