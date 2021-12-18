@@ -23,6 +23,11 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
+      - name: Install remotes
+        shell: Rscript{0}
+        run: |
+          install.packages("remotes")
+
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
