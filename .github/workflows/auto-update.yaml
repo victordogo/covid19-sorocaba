@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setting up Git repository
-        uses: actions/checkout@2
+        uses: actions/checkout@v2
 
       - name: Set up R
         uses: r-lib/actions/setup-R@v1
