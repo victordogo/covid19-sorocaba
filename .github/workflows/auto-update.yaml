@@ -44,8 +44,10 @@ jobs:
       - name: Updating data
         env:
           GOOGLE_CLOUD_SECRET: ${{ secrets.GOOGLE_CLOUD_SECRET }}
+          GOOGLE_AUTH_SECRET: ${{ secrets.GOOGLE_AUTH_SECRET }}
         run: |
           secret_project_id = Sys.getenv("GOOGLE_CLOUD_SECRET")
+          secret_auth = Sys.getenv("GOOGLE_AUTH_SECRET")
           source("data-raw/covid.R")
           source("data-raw/vacina.R")
         shell: Rscript {0}

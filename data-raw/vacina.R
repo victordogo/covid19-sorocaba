@@ -2,6 +2,8 @@
 ## a cidade de Sorocaba. Os dados são referentes a população dividida por grupo
 ## etário e sexo, quantidade e porcentagens de pessoas com 1 e 2 doses da vacina.
 
+bigrquery::bq_auth(secret_auth)
+
 basedosdados::set_billing_id(secret_project_id)
 
 # Lendo banco de dados da vacina
