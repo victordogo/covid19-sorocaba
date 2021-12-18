@@ -12,12 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-
-      - name: Set up R
-        uses: r-lib/actions/setup-R@master
-
-      - name: Setting up pandoc for Rmd docs
-        uses: r-lib/actions/setup-pandoc@master
+      - uses: r-lib/actions/setup-R@master
+      - uses: r-lib/actions/setup-pandoc@master
 
       - name: Install dependencies
         run: |
