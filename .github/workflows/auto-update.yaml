@@ -1,0 +1,49 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+name: auto-update
+
+jobs:
+  auto-update:
+    name: Atualizacao automatica do dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setting up Git repository
+        uses: actions/checkout@2
+
+      - name: Set up R ${{ matrix.r-version }}
+        uses: r-lib/actions/setup-R@v1
+
+      - name: Setting up pandoc for Rmd docs
+        uses: r-lib/actions/setup-pandoc@v1
+
+      - name: Install dependencies
+        run: |
+          install.packages(c("dplyr", "ggplot2", "flexdashboard",
+          "tidyr", "plotly", "rmarkdown"))
+        shell: Rscript {0}
+
+      - name: Updating data
+        env:
+          GOOGLE_CLOUD_SECRET: ${{ secrets.GOOGLE_CLOUD_SECRET }}
+        run: |
+          secret_project_id = Sys.getenv("GOOGLE_CLOUD_SECRET")
+          source("data-raw/covid.R")
+          source("data-raw/vacina.R")
+        shell: Rscript {0}
+
+      - name: Rendering updated dashboard
+        run: |
+          rmarkdown::render("docs/index.Rmd", output="all")
+        shell: Rscript{0}
+
+      - name: Commit results
+        run: |
+          git add docs/index.Rmd
+          git add docs/index.html
+          git gommit -m 'Atualizacao do dashboard' || echo "Sem mudancas"
+          git push origin || echo "Sem mudancas"
+
