@@ -18,8 +18,9 @@ Todos os dados, gráficos e formatação do dashboard são construídos com aux�
 * O dashboard é construído com o auxílio do pacote [`{flexdashboard}`](https://pkgs.rstudio.com/flexdashboard/);
 * Os dados são tratados com auxílio dos pacotes do [tidyverse](https://www.tidyverse.org/);
 * Os gráficos são produzidos, em suas versões estáticas, com auxílio do pacote [`{ggplot2}`](https://ggplot2.tidyverse.org/). Depois, são transformados em versões interativas com auxílio do pacote [`{plotly}`](https://plotly.com/r/);
-* O site é publicado com auxílio do GitHub Pages, com automatização da leitura e tratamento diário das bases de dados através do GitHub Actions;
-* As bases de dados são retiradas dos sites brasil.io (no caso de dados relativos a casos e mortes) e basedosdados.org (no caso de dados da vacinação). Os dados em si não são criados por eles, mas eles constituem uma **importante parte deste trabalho** devido ao fato de disponibilizarem diversas bases ora bagunçadas e difíceis de trabalhar em formatos muito mais amigáveis e que agilizam o processo de análise.
+* O site é publicado com auxílio do GitHub Pages;
+* As bases de dados são retiradas dos sites brasil.io (no caso de dados relativos a casos e mortes) e basedosdados.org (no caso de dados da vacinação). Os dados em si não são criados por eles, mas eles constituem uma **importante parte deste trabalho** devido ao fato de disponibilizarem diversas bases ora bagunçadas e difíceis de trabalhar em formatos muito mais amigáveis e que agilizam o processo de análise;
+* **Próximos passos:** o intuito futuro deste site é ser atualizado automaticamente através de ferramentas de integração contínua (como o GitHub Actions).
 
 
 Todos os códigos utilizados podem ser vistos no repositório do site.
