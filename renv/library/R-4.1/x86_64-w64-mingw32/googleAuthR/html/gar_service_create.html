@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Work with service accounts via the API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for gar_service_create {googleAuthR}"><tr><td>gar_service_create {googleAuthR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Work with service accounts via the API</h2>
+
+<h3>Description</h3>
+
+<p>These functions let you create a service JSON key from an OAuth2 login.  You can then assign it roles and do a one time download of a service account key to use for authentication in other Google APIs
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gar_service_create(
+  accountId,
+  projectId,
+  serviceName = "googleAuthR::gar_service_create",
+  serviceDescription = "A service account created via googleAuthR"
+)
+
+gar_service_grant_roles(
+  accountIds,
+  roles,
+  projectId,
+  type = c("serviceAccount", "user", "group")
+)
+
+gar_service_get_roles(
+  projectId,
+  accountId = NULL,
+  type = c("serviceAccount", "user", "group")
+)
+
+gar_service_key(
+  accountId,
+  projectId,
+  file = paste0(accountId, "-auth-key.json")
+)
+
+gar_service_key_list(accountId, projectId)
+
+gar_service_list(projectId)
+
+gar_service_get(accountId, projectId)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>accountId</code></td>
+<td>
+<p>The service accountId</p>
+</td></tr>
+<tr valign="top"><td><code>projectId</code></td>
+<td>
+<p>The projectId containing the service account</p>
+</td></tr>
+<tr valign="top"><td><code>serviceName</code></td>
+<td>
+<p>Name of service account</p>
+</td></tr>
+<tr valign="top"><td><code>serviceDescription</code></td>
+<td>
+<p>Description of service account</p>
+</td></tr>
+<tr valign="top"><td><code>accountIds</code></td>
+<td>
+<p>A vector of accountIds in the form <code>accountId@projectid.iam.gserviceaccount.com</code></p>
+</td></tr>
+<tr valign="top"><td><code>roles</code></td>
+<td>
+<p>A character vector of roles to give the accountIds e.g. <code>roles/editor</code> - see list of roles here <a href="https://cloud.google.com/iam/docs/understanding-roles#predefined_roles">https://cloud.google.com/iam/docs/understanding-roles#predefined_roles</a> or in your GCP console <code>https://console.cloud.google.com/iam-admin/roles/details/roles</code></p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>The type of accountId to add role for - e.g. <code>user:mark@me.com</code> or <code>serviceAccount:accountId@projectid.iam.gserviceaccount.com</code></p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>The file to download the private JSON key to</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It will download the existing roles, and append the role you add to it here.
+</p>
+<p>If you supply an accountId to <code>gar_service_get_roles</code> then it will return only those roles that accountId has.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If it already exists, returns it via <a href="../../googleAuthR/help/gar_service_get.html">gar_service_get</a>, else creates the service key
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Combine these functions to provision emails in one step with <a href="../../googleAuthR/help/gar_service_provision.html">gar_service_provision</a>
+</p>
+<p><a href="https://cloud.google.com/resource-manager/reference/rest/v1/projects/setIamPolicy">https://cloud.google.com/resource-manager/reference/rest/v1/projects/setIamPolicy</a>
+</p>
+<p><a href="https://cloud.google.com/resource-manager/reference/rest/v1/projects/setIamPolicy">https://cloud.google.com/resource-manager/reference/rest/v1/projects/setIamPolicy</a>
+</p>
+<p>https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/create
+</p>
+<p>Other IAM functions: 
+<code><a href="../../googleAuthR/help/gar_service_provision.html">gar_service_provision</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Not run: 
+
+# all roles
+projectId &lt;- gar_set_client(
+                json = Sys.getenv("GAR_CLIENT_JSON"), 
+                scopes = "https://www.googleapis.com/auth/cloud-platform")
+gar_service_get_roles(projectId)
+
+# roles for one accountId
+gar_service_get_roles(
+    projectId, 
+    accountId = "1080525199262@cloudbuild.gserviceaccount.com")
+
+
+## End(Not run)
+## Not run: 
+ library(googleAuthR)
+ gar_set_client(scopes = "https://www.googleapis.com/auth/cloud-platform")
+ gar_auth()
+ gar_service_create("test12345678", "my-project")
+ 
+ gar_service_get("test12345678@my-project.iam.gserviceaccount.com", 
+                 projectId = "my-project")
+ 
+ gar_service_grant_roles("test12345678@my-project.iam.gserviceaccount.com",
+                         role = "roles/editor",
+                         projectId = "my-project")
+ 
+ gar_service_key("test12345678", "my-project", "my-auth.json")
+ 
+ gar_service_list("my-project")
+ 
+ gar_service_key_list("test12345678", "my-project")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>googleAuthR</em> version 1.4.1 <a href="00Index.html">Index</a>]</div>
+</div></body></html>

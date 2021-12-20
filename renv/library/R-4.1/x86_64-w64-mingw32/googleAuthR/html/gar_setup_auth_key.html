@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a service account for googleCloudRunner</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+
+<table width="100%" summary="page for gar_setup_auth_key {googleAuthR}"><tr><td>gar_setup_auth_key {googleAuthR}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a service account for googleCloudRunner</h2>
+
+<h3>Description</h3>
+
+<p>This will use your Google OAuth2 user to create a suitable service account
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gar_setup_auth_key(
+  email = Sys.getenv("GARGLE_EMAIL"),
+  file = "googleauthr-auth-key.json",
+  session_user = NULL,
+  client_json = "GAR_CLIENT_JSON",
+  roles = NULL,
+  default_key = "googleauthr"
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>email</code></td>
+<td>
+<p>What email to open OAuth2 with</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>Where to save the authentication file</p>
+</td></tr>
+<tr valign="top"><td><code>session_user</code></td>
+<td>
+<p>1 for user level, 2 for project level, leave <code>NULL</code> to be prompted</p>
+</td></tr>
+<tr valign="top"><td><code>client_json</code></td>
+<td>
+<p>The location of the env arg holding client json</p>
+</td></tr>
+<tr valign="top"><td><code>roles</code></td>
+<td>
+<p>Whether to assign roles to the service key</p>
+</td></tr>
+<tr valign="top"><td><code>default_key</code></td>
+<td>
+<p>The default name of the service key</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>TRUE if the file is ready to be setup, FALSE if need to stop
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other setup functions: 
+<code><a href="../../googleAuthR/help/gar_setup_auth_check.html">gar_setup_auth_check</a>()</code>,
+<code><a href="../../googleAuthR/help/gar_setup_clientid.html">gar_setup_clientid</a>()</code>,
+<code><a href="../../googleAuthR/help/gar_setup_edit_renviron.html">gar_setup_edit_renviron</a>()</code>,
+<code><a href="../../googleAuthR/help/gar_setup_env_check.html">gar_setup_env_check</a>()</code>,
+<code><a href="../../googleAuthR/help/gar_setup_menu_do.html">gar_setup_menu_do</a>()</code>,
+<code><a href="../../googleAuthR/help/gar_setup_menu.html">gar_setup_menu</a>()</code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>googleAuthR</em> version 1.4.1 <a href="00Index.html">Index</a>]</div>
+</div></body></html>
