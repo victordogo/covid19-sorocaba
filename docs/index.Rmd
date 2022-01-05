@@ -35,7 +35,7 @@ htmltools::tagList(fontawesome::fa_html_dependency())
     }
 ```
 
-Contágio
+Casos
 ================================================================
 
 Column {.tabset}
@@ -464,6 +464,7 @@ grafico_vacinacao |> plotly::ggplotly()
 primeira_dose_f <- vacina_scb |> 
   dplyr::filter(dose_vacina==1,
                 sexo=="F") |>
+  tidyr::drop_na() |> 
   dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
                 `Grupo Etário`=grupo_idade) |>
   dplyr::arrange(grupo_idade) |> 
@@ -477,6 +478,7 @@ primeira_dose_f <- vacina_scb |>
 segunda_dose_f <- vacina_scb |> 
   dplyr::filter(dose_vacina==2,
                 sexo=="F") |>
+  tidyr::drop_na() |> 
   dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
                 `Grupo Etário`=grupo_idade) |>
   dplyr::arrange(grupo_idade) |> 
@@ -512,6 +514,7 @@ data.frame(primeira_dose_f,segunda_dose_f) |>
 primeira_dose_m <- vacina_scb |> 
   dplyr::filter(dose_vacina==1,
                 sexo=="M") |>
+  tidyr::drop_na() |> 
   dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
                 `Grupo Etário`=grupo_idade) |>
   dplyr::arrange(grupo_idade) |> 
@@ -525,6 +528,7 @@ primeira_dose_m <- vacina_scb |>
 segunda_dose_m <- vacina_scb |> 
   dplyr::filter(dose_vacina==2,
                 sexo=="M") |>
+  tidyr::drop_na() |> 
   dplyr::mutate(`Porcentagem`=paste0(porc, "%"),
                 `Grupo Etário`=grupo_idade) |>
   dplyr::arrange(grupo_idade) |> 
@@ -559,6 +563,7 @@ data.frame(primeira_dose_m,segunda_dose_m) |>
 
 primeira_dose <- vacina_scb |> 
   dplyr::filter(dose_vacina==1) |>
+  tidyr::drop_na() |> 
   dplyr::group_by(grupo_idade) |>
   dplyr::summarise(populacao=sum(populacao),
                    n=sum(n),
@@ -575,6 +580,7 @@ primeira_dose <- vacina_scb |>
 
 segunda_dose <- vacina_scb |> 
   dplyr::filter(dose_vacina==2) |>
+  tidyr::drop_na() |> 
   dplyr::group_by(grupo_idade) |>
   dplyr::summarise(populacao=sum(populacao),
                    n=sum(n),
@@ -613,6 +619,7 @@ Column {data-width=150}
 # Porcentagem da população com 1 dose
 
 vacina_scb |>
+  tidyr::drop_na() |> 
   dplyr::group_by(dose_vacina) |> 
   dplyr::filter(dose_vacina==1) |> 
   dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
@@ -634,6 +641,7 @@ vacina_scb |>
 # Porcentagem da população com 2 dose
 
 vacina_scb |>
+  tidyr::drop_na() |> 
   dplyr::group_by(dose_vacina) |> 
   dplyr::filter(dose_vacina==2) |> 
   dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
@@ -655,6 +663,7 @@ vacina_scb |>
 # Porcentagem de +15 anos com 1 dose
 
 vacina_scb[-c(1:7),] |>
+  tidyr::drop_na() |> 
   dplyr::group_by(dose_vacina) |> 
   dplyr::filter(dose_vacina==1) |> 
   dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
@@ -676,6 +685,7 @@ vacina_scb[-c(1:7),] |>
 # Porcentagem de +15 anos com 1 dose
 
 vacina_scb[-c(1:7),] |>
+  tidyr::drop_na() |> 
   dplyr::group_by(dose_vacina) |> 
   dplyr::filter(dose_vacina==2) |> 
   dplyr::summarise(porc_tot=(sum(n)/sum(populacao))*100) |> 
