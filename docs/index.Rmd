@@ -746,6 +746,8 @@ Quaisquer dúvidas, críticas, elogios e sugestões podem ser encaminhadas por e
 
 Você pode visualizar o repositório deste site em [victordogo/covid19-sorocaba](https://github.com/victordogo/covid19-sorocaba) no GitHub.
 
+**OBS: POR CONTA DO APAGÃO DOS DADOS DO MINISTÉRIO DA SAÚDE, CERTAS INFORMAÇÕES CHEGAM COM ATRASO OU NÃO ESTÃO DISPONÍVEIS NO MOMENTO.**
+
 **Referências:**
 
 <div id="refs"></div>
