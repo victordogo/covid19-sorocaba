@@ -6,7 +6,7 @@ basedosdados::set_billing_id(secret_project_id)
 
 # Lendo banco de dados da vacina
 
-dados_vacina <- basedosdados::bdplyr("basedosdados-dev.br_ms_vacinacao_covid19.microdados") |>
+dados_vacina <- basedosdados::bdplyr("br_ms_vacinacao_covid19.microdados") |>
   dplyr::filter(sigla_uf == "SP",
                 id_municipio_estabelecimento == "3552205") |>
   dplyr::select(data_aplicacao_vacina,
